@@ -54,6 +54,10 @@ class Audio(object):
 
                 device = Device()
 
+        nullDevice = Device()
+        nullDevice.name = "No Audio"
+        self._devices.append(nullDevice)
+
     # =========================================================================
     def deviceSet(self, index):
 

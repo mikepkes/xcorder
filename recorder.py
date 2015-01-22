@@ -71,6 +71,10 @@ class Recorder(object):
     @property
     def audioArgs(self):
 
+        # Return no arguments for audio if we are using no audio device.
+        if not self._audioDevice.api or not self._audioDevice.source:
+            return ""
+
         return '-f {f} '.format(f=self._audioDevice.api) + \
                '-ac 1 ' + \
                '-ar 48000 ' + \
