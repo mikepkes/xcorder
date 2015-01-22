@@ -84,15 +84,26 @@ class Recorder(object):
     @property
     def outputArgs(self):
 
-        return '-map 0:0 ' + \
-               '-map 1:0 ' + \
-               '-vcodec mpeg4 ' + \
-               '-qscale:v 1 ' + \
-               '-acodec pcm_s16be ' + \
-               '-qscale:a 1 ' + \
-               '-f segment ' + \
-               '-segment_time 300 ' + \
-               '{d}recording.%04d.mov '.format(d=self._workDir)
+        # Mapping and output codecs need to be omitted with no audio.
+        hasAudio = self._audioDevice.api and self._audioDevice.source
+
+        output = '-map 0:0 '
+
+        if hasAudio:
+            output += '-map 1:0 '
+
+        output += '-vcodec mpeg4 ' + \
+                  '-qscale:v 1 '
+
+        if hasAudio:
+            output += '-acodec pcm_s16be '
+
+        output += '-qscale:a 1 ' + \
+                  '-f segment ' + \
+                  '-segment_time 300 ' + \
+                  '{d}recording.%04d.mov '.format(d=self._workDir)
+
+        return output
 
 # =============================================================================
 
